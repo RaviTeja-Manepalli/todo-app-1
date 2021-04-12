@@ -20,10 +20,10 @@ pipeline{
             }
         }
     
-     stage("Test"){
+     stage("Test and Package"){
             steps{
-                echo "Maven Test"
-                bat 'mvn -f app/pom.xml -Dmaven.test.failure.ignore=true  test'
+                echo "Maven Test and package"
+                bat 'mvn -f app/pom.xml -Dmaven.test.failure.ignore=true  test package'
                 
             }
             post{
@@ -39,99 +39,4 @@ pipeline{
             }
         }
        
-       stage('sonar analysis'){
-            agent any
-            steps{
-                withSonarQubeEnv('sonar-server'){
-                    echo 'Performing SonarQube Analysis'
-                    bat 'mvn -f app/pom.xml package sonar:sonar'
-                }
-            }
-            post{
-                success{
-                    echo "========Code Analysis stage executed successfully========"
-
-                }
-                failure{
-                    echo "========Code Analysis stage execution failed========"
-                }
-            }
-            
-        }
-        
-         stage("Quality Gate") {
-            steps {
-              
-              timeout(time: 1, unit: 'HOURS') {
-                script{
-                        def qg = waitForQualityGate() 
-                        if (qg.status != 'OK')
-                        {
-                            error "Pipeline failed due to gate failure "
-                            
-                         }
-                    }
-              }
-             
-            }
-            
-            post {  
-            success {
-                echo ' SonarQube Analysis complete'
-                }
-            failure {  
-             echo 'SonarQube Analysis Failed'
-             
-            }    
-          }
-        }  
-        
-        
-    /*stage('deploy to artifactory'){
-            steps{
-                rtUpload (
-            serverId: 'ARTIFACTORY_SERVER',
-            spec: '''{
-                 "files": [
-                             {
-                                "pattern": "/var/jenkins_home/workspace/todo-app-complete-ci-cd@2/app/target/*.war",
-                                "target": "art-doc-dev-loc-todo-app/"
-                            }
-                        ]
-            }''',
-            )
-            }
-        }*/
-        
-       /* stage('download artifact'){
-            steps{
-                 rtDownload (
-                 serverId: "ARTIFACTORY_SERVER",
-                spec:"""{
-                     "files": [
-                                {
-                                    "pattern": "art-doc-dev-loc-todo-app/**",
-                                    "target": "app/"      
-                                }
-                            ]
-              }"""
-            )
-            
-            }
-        }*/
-
-        
-
-    }
-    post{
-        always{
-            echo "========always========"
-        }
-        success{
-            echo "========pipeline executed successfully ========"
-        }
-        failure{
-            echo "========pipeline execution failed========"
-        }
-    }
-}
+       
