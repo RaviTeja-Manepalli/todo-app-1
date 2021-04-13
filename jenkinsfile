@@ -54,7 +54,7 @@ pipeline{
                script{
                 last_staged = env.STAGE_NAME
                 }
-                    bat 'docker-compose build'         
+                    sh 'docker-compose build'         
                
             }
         }
