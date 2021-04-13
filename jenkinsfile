@@ -49,6 +49,17 @@ pipeline{
         }
         
       
+      stage('Docker build'){
+            steps{
+               script{
+                last_staged = env.STAGE_NAME
+                }
+                    bat 'docker image prune -a --force'
+                    bat 'docker-compose build'         
+               
+            }
+        }
+
        }
        }
        
