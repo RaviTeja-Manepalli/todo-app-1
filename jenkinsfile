@@ -1,5 +1,9 @@
 pipeline{
     agent any;
+    tools{
+        maven 'Maven'
+        jdk 'JDK'
+    }
      
     stages{
         stage("build"){
@@ -48,9 +52,7 @@ pipeline{
       
       stage('Docker build'){
             steps{
-               script{
-                last_staged = env.STAGE_NAME
-                }
+               
                     sh 'docker-compose build'         
                
             }
