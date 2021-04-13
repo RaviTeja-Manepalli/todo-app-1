@@ -57,14 +57,14 @@ pipeline{
 
        stage("commiting the deocker images"){
             steps{
-                sh "docker commit ravitejamanepalli/todo_app"
+                sh "docker commit ravitejamanepalli/todo-app"
             }
         }
 
         stage("pushing the images to docker hub"){
             steps{
                 withDockerRegistry([ credentialsId: "83fb3bd9-d130-41d3-b0f9-3599a244c460", url: "" ]){
-                    sh "docker push ravitejamanepalli/todo_app"
+                    sh "docker push ravitejamanepalli/todo-app"
                 }
             }
         }
