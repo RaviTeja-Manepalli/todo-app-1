@@ -57,7 +57,7 @@ pipeline{
 
        stage("commiting the deocker images"){
             steps{
-                sh "docker commit ravitejamanepalli/todo-app"
+                sh "docker commit b92da5457827 ravitejamanepalli/todo-app"
             }
         }
 
