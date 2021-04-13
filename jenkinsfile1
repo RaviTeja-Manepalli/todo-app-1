@@ -1,0 +1,60 @@
+pipeline{
+    agent any;
+    tools{
+        maven 'Maven'
+        jdk 'JDK'
+    }
+     
+    stages{
+        stage("build"){
+            steps{
+                sh 'mvn clean'
+                sh 'mvn -f app/pom.xml compile'
+            }
+            post{
+                success{
+                    echo "========Maven compile stage executed successfully========"
+                }
+                failure{
+                    echo "========Maven compile stage execution failed========"
+                }
+            }
+        }
+    
+     stage("Test and Package"){
+            steps{
+                echo "Maven Test and package"
+                sh 'mvn -f app/pom.xml -Dmaven.test.failure.ignore=true  test package'
+                
+            }
+            post{
+                success{
+                    echo "========Maven Test stage executed successfully========"
+                     junit 'app/target/surefire-reports/*.xml'
+
+                }
+                failure{
+                    echo "========Maven Test stage execution failed========"
+                     junit 'app/target/surefire-reports/*.xml'
+                }
+            }
+        }
+        
+         
+         /*stage( 'SonarQube analysis'){
+            steps {
+              withSonarQubeEnv('sonar') {
+                sh 'mvn -f app/pom.xml sonar:sonar'
+              }
+            }
+        }*/
+
+        stage('Docker build'){
+            steps{
+                sh 'docker-compose up -d'
+            }
+        }
+
+
+    }
+}
