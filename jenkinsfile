@@ -1,14 +1,12 @@
 pipeline{
     agent any;
      tools{
-       maven 'maven'
-       jdk 'JDK'
-   }
+       }
     stages{
         stage("build"){
             steps{
-                bat 'mvn clean'
-                bat 'mvn -f app/pom.xml compile'
+                sh 'mvn clean'
+                sh 'mvn -f app/pom.xml compile'
             }
             post{
                 success{
@@ -23,7 +21,7 @@ pipeline{
      stage("Test and Package"){
             steps{
                 echo "Maven Test and package"
-                bat 'mvn -f app/pom.xml -Dmaven.test.failure.ignore=true  test package'
+                sh 'mvn -f app/pom.xml -Dmaven.test.failure.ignore=true  test package'
                 
             }
             post{
@@ -43,7 +41,7 @@ pipeline{
          stage( 'SonarQube analysis'){
             steps {
               withSonarQubeEnv('sonar') {
-                bat 'mvn -f app/pom.xml sonar:sonar'
+                sh 'mvn -f app/pom.xml sonar:sonar'
               }
             }
         }
@@ -54,7 +52,7 @@ pipeline{
                script{
                 last_staged = env.STAGE_NAME
                 }
-                    bat 'docker-compose build'         
+                    sh 'docker-compose build'         
                
             }
         }
