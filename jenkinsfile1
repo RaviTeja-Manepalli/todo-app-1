@@ -57,16 +57,16 @@ pipeline{
 
        stage("commiting the deocker images"){
             steps{
-                bat "docker commit kanban-ui bharathvelisala/challenge-ui"
-                bat "docker commit kanban-app bharathvelisala/challenge-app" 
+                sh "docker commit ravitejamanepalli/todo_app"
+                sh "docker commit ravitejamanepalli/nginx:1.13" 
             }
         }
 
         stage("pushing the images to docker hub"){
             steps{
                 withDockerRegistry([ credentialsId: "83fb3bd9-d130-41d3-b0f9-3599a244c460", url: "" ]){
-                    bat "docker push ravitejamanepalli/todo_app"
-                    bat "docker push ravitejamanepalli/nginx:1.13"
+                    sh "docker push ravitejamanepalli/todo_app"
+                    sh "docker push ravitejamanepalli/nginx:1.13"
                 }
             }
         }
