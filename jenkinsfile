@@ -43,7 +43,7 @@ pipeline{
          stage( 'SonarQube analysis'){
             steps {
               withSonarQubeEnv('sonar') {
-                bat 'mvn -f app/pom.xml sonar:sonar'
+                bat 'mvn sonar:sonar'
               }
             }
         }
