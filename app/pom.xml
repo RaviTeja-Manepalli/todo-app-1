@@ -17,6 +17,11 @@
 		<version>1.5.3.RELEASE</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
+	<properties>
+       <sonar.projectKey>RaviTeja-Manepalli_todo-app-1</sonar.projectKey>
+       <sonar.organization>raviteja</sonar.organization>
+       <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+       </properties>
 
 	
 
