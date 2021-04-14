@@ -67,7 +67,30 @@ pipeline{
                }
              
             }
-        }    
+        } 
+
+
+      /*  stage('deploy to artifactory')
+        {
+          steps{
+     
+             rtUpload (
+                 serverId: 'ARTIFACTORY_SERVER',
+             spec: '''{
+             "files": [
+            {
+               "pattern": "target/*.jar",
+              "target": "arti-maven-dev-loc/"
+            }
+         ]
+        }''',
+ 
+            buildName: 'Math Operation',
+            buildNumber: '42'
+         )
+        }
+       }*/
+   
 
         stage('Docker build'){
             steps{
