@@ -41,13 +41,33 @@ pipeline{
         }
         
          
-         /*stage( 'SonarQube analysis'){
+         stage( 'SonarQube analysis'){
             steps {
-              withSonarQubeEnv('sonar') {
+              withSonarQubeEnv('sonar') 
+              {
                 sh 'mvn -f app/pom.xml sonar:sonar'
               }
             }
-        }*/
+        }
+
+
+        stage("Quality Gate") {
+            steps {
+              
+              timeout(time: 1, unit: 'HOURS') {
+                script{
+                
+                        def qg = waitForQualityGate() 
+                        if (qg.status != 'OK')
+                        {
+                            error "Pipeline failed due to gate failure "
+                            
+                        }
+                    }
+               }
+             
+            }
+        }    
 
         stage('Docker build'){
             steps{
